@@ -7,10 +7,6 @@ import io.ktor.client.engine.android.*
 import io.ktor.client.features.json.*
 import io.ktor.client.features.json.serializer.*
 import io.ktor.client.features.logging.*
-import org.koin.androidx.compose.get
-import org.koin.androidx.viewmodel.dsl.viewModel
-import org.koin.core.scope.get
-import org.koin.dsl.module
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
@@ -19,10 +15,19 @@ import org.koin.dsl.module
  */
 
 val appModule = module {
-
     single {
-        "Hello"
+        PostServiceImpl(
+            client = HttpClient(Android) // Change for iOS
+            {
+                install(Logging) {
+                    level = LogLevel.ALL
+                }
+                install(JsonFeature) {
+                    serializer = KotlinxSerializer()
+                }
+            }
+        )
     }
 
-    viewModel { MainViewModel() }
+    viewModel { MainViewModel(get()) }
 }

@@ -6,6 +6,7 @@ import com.example.ktornetworkcall.data.remote.dto.PostRequest
 import io.ktor.client.*
 import io.ktor.client.features.*
 import io.ktor.client.request.*
+import io.ktor.client.statement.*
 import io.ktor.http.*
 
 /**
@@ -38,11 +39,14 @@ class PostServiceImpl(
 
     override suspend fun createPost(postRequest: PostRequest): PostDto? {
         return try {
-            client.post<PostDto> {
+            val post = client.post<PostDto> {
                 url(HttpRoutes.POSTS)
                 contentType(ContentType.Application.Json)
                 body = postRequest
             }
+            val response: HttpResponse = client.get(HttpRoutes.POSTS)
+            post.isSuccessful = response.status.isSuccess()
+            post
         } catch (e: RedirectResponseException) {
             // 3xx - responses
             println("Error: ${e.response.status.description}")

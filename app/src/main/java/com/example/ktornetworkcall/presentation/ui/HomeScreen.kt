@@ -12,9 +12,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.example.ktornetworkcall.data.remote.PostService
 import com.example.ktornetworkcall.data.remote.dto.PostDto
 import com.example.ktornetworkcall.presentation.Screens
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 
 /**
  * Created by Fati Gurqiti on 7/19/2023.
@@ -22,8 +25,9 @@ import com.example.ktornetworkcall.presentation.Screens
 
 private val service = PostService.create() // DI this to view model
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun HomeScreen() {
+fun HomeScreen(navController: NavHostController) {
     val posts = produceState(initialValue = emptyList<PostDto>(), producer = {
         value = service.getPosts()
     })
@@ -41,7 +45,7 @@ fun HomeScreen() {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 IconButton(onClick = {
-                    /*TODO*/
+                    navController.navigate(Screens.CreatePostScreen.route)
                 }) {
                     Text(text = "Create a post", fontSize = 18.sp)
                 }
@@ -56,6 +60,10 @@ fun HomeScreen() {
                             .clickable { },
                         elevation = 10.dp,
                         shape = RoundedCornerShape(8.dp),
+                        onClick = {
+                            val data = Json.encodeToString(it)
+                            navController.navigate(Screens.PostDetailsScreen.withArgs(data))
+                        }
                     ) {
                         Column(
                             modifier = Modifier

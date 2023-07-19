@@ -6,8 +6,13 @@ import androidx.activity.compose.setContent
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.ktornetworkcall.presentation.ui.theme.KtorNetworkCallTheme
+import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : ComponentActivity() {
+//    private val vm by viewModel<MainViewModel>()
+
+    private val hello by inject<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -10,13 +10,12 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : ComponentActivity() {
-//    private val vm by viewModel<MainViewModel>()
-
-    private val hello by inject<String>()
+    private val mainViewModel: MainViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            mainViewModel.call()
             KtorNetworkCallTheme {
                 val navController = rememberNavController()
                 val backStackEntry = navController.currentBackStackEntryAsState()

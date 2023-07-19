@@ -8,9 +8,7 @@ import kotlinx.coroutines.launch
 /**
  * Created by Fati Gurqiti on 7/19/2023.
  */
-class MainViewModel(
-//    private val service: PostService
-) : ViewModel() {
+class MainViewModel : ViewModel() {
 
     fun call() {
         println("hajde test")

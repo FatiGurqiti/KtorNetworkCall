@@ -20,7 +20,9 @@ import org.koin.dsl.module
 
 val appModule = module {
 
-    single{
+    single {
         "Hello"
     }
+
+    viewModel { MainViewModel() }
 }
